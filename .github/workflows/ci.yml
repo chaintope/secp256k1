@@ -1,0 +1,18 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  linux:
+    name: "Linux"
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build and test
+        run: |
+           ./autogen.sh
+           mkdir build && cd build
+           ../configure
+           make all
+           ./tests
+           ./exhaustive_tests
