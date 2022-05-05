@@ -122,6 +122,48 @@ if(SECP256K1_ENABLE_MODULE_SCHNORR)
 	set(ENABLE_MODULE_SCHNORR 1)
 endif()
 
+#generator module
+option(SECP256K1_ENABLE_MODULE_GENERATOR "Build libsecp256k1's generator module" ON)
+if(SECP256K1_ENABLE_MODULE_GENERATOR)
+	set(ENABLE_MODULE_GENERATOR1)
+endif()
+
+#Commitment module
+option(SECP256K1_ENABLE_MODULE_COMMITMENT"Build libsecp256k1's Commitment module" ON)
+if(SECP256K1_ENABLE_MODULE_COMMITMENT)
+	set(ENABLE_MODULE_COMMITMENT 1)
+endif()
+
+#Rangeproof module
+option(SECP256K1_ENABLE_MODULE_RANGEPROOF "Build libsecp256k1's Rangeproof module" ON)
+if(SECP256K1_ENABLE_MODULE_RANGEPROOF)
+	set(ENABLE_MODULE_RANGEPROOF 1)
+endif()
+
+#Bulletproof module
+option(SECP256K1_ENABLE_MODULE_BULLETPROOF"Build libsecp256k1's Bulletproof module" ON)
+if(SECP256K1_ENABLE_MODULE_BULLETPROOF)
+	set(ENABLE_MODULE_BULLETPROOF 1)
+endif()
+
+#Aggregate sig module
+option(SECP256K1_ENABLE_MODULE_AGGSIG "Build libsecp256k1's Aggregate sig module" ON)
+if(SECP256K1_ENABLE_MODULE_AGGSIG)
+	set(ENABLE_MODULE_AGGSIG 1)
+endif()
+
+#Whitelist module
+option(SECP256K1_ENABLE_MODULE_WHITELIST "Build libsecp256k1's Whitelist module" ON)
+if(SECP256K1_ENABLE_MODULE_WHITELIST)
+	set(ENABLE_MODULE_WHITELIST 1)
+endif()
+
+#Surjection proof module
+option(SECP256K1_ENABLE_MODULE_SURJECTIONPROOF "Build libsecp256k1's Surjection proof module" ON)
+if(SECP256K1_ENABLE_MODULE_SURJECTIONPROOF)
+	set(ENABLE_MODULE_SURJECTIONPROOF 1)
+endif()
+
 # Static precomputation for eliptic curve mutliplication
 option(SECP256K1_ECMULT_STATIC_PRECOMPUTATION "Precompute libsecp256k1's eliptic curve mutliplication tables" ON)
 if(SECP256K1_ECMULT_STATIC_PRECOMPUTATION)
