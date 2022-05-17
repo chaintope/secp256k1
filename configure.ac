@@ -553,7 +553,6 @@ if test x"$enable_experimental" = x"yes"; then
   AC_MSG_NOTICE([Building aggsig module: $enable_module_aggsig])
   AC_MSG_NOTICE([Building key whitelisting module: $enable_module_whitelist])
   AC_MSG_NOTICE([Building surjection proof module: $enable_module_surjectionproof])
-  AC_MSG_NOTICE([Building schnorr module: $enable_module_schnorr])
   AC_MSG_NOTICE([******])
 
   if test x"$enable_module_generator" != x"yes"; then
@@ -589,9 +588,7 @@ else
   if test x"$set_asm" = x"arm"; then
     AC_MSG_ERROR([ARM assembly optimization is experimental. Use --enable-experimental to allow.])
   fi
-  if test x"$enable_module_schnorrsig" = x"yes"; then
-    AC_MSG_ERROR([schnorrsig module is experimental. Use --enable-experimental to allow.])
-  fi
+
   if test x"$set_asm" = x"arm"; then
     AC_MSG_ERROR([ARM assembly optimization is experimental. Use --enable-experimental to allow.])
   fi

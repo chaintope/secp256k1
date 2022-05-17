@@ -10,8 +10,9 @@
 
 #include "include/secp256k1_schnorr.h"
 #include "modules/schnorr/main_impl.h"
+#include "modules/schnorr/batch_impl.h"
 
-void test_schnorr_api() {
+void test_schnorr_api(secp256k1_scratch_space *scratch) {
     unsigned char sk1[32];
     unsigned char sk2[32];
     unsigned char sk3[32];
@@ -672,7 +673,9 @@ void run_schnorr_tests(void) {
         test_schnorr_end_to_end();
     }
 
-    test_schnorr_api();
+    secp256k1_scratch_space *scratch = secp256k1_scratch_space_create(ctx, 1024 * 1024);
+
+    test_schnorr_api(scratch);
     run_schnorr_compact_test();
     test_ecdsa_schnorr_nonce();
 }
