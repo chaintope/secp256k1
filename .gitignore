@@ -20,6 +20,7 @@ gen_context
 
 Makefile
 configure
+.vscode
 .libs/
 Makefile.in
 aclocal.m4
