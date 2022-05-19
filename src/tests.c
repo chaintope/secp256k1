@@ -5196,16 +5196,8 @@ void run_ecdsa_openssl(void) {
 # include "modules/bulletproofs/tests_impl.h"
 #endif
 
-#ifdef ENABLE_MODULE_AGGSIG
-# include "modules/aggsig/tests_impl.h"
-#endif
-
 #ifdef ENABLE_MODULE_WHITELIST
 # include "modules/whitelist/tests_impl.h"
-#endif
-
-#ifdef ENABLE_MODULE_SURJECTIONPROOF
-# include "modules/surjection/tests_impl.h"
 #endif
 
 int main(int argc, char **argv) {
@@ -5350,18 +5342,11 @@ int main(int argc, char **argv) {
     run_commitment_tests();
 #endif
 
-#ifdef ENABLE_MODULE_AGGSIG
-    run_aggsig_tests();
-#endif
-
 #ifdef ENABLE_MODULE_WHITELIST
     /* Key whitelisting tests */
     run_whitelist_tests();
 #endif
 
-#ifdef ENABLE_MODULE_SURJECTIONPROOF
-    run_surjection_tests();
-#endif
 
     secp256k1_rand256(run32);
     printf("random run = %02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x\n", run32[0], run32[1], run32[2], run32[3], run32[4], run32[5], run32[6], run32[7], run32[8], run32[9], run32[10], run32[11], run32[12], run32[13], run32[14], run32[15]);

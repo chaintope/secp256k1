@@ -10,7 +10,6 @@
 
 #include "include/secp256k1_schnorr.h"
 #include "modules/schnorr/main_impl.h"
-#include "modules/schnorr/batch_impl.h"
 
 void test_schnorr_api(secp256k1_scratch_space *scratch) {
     unsigned char sk1[32];

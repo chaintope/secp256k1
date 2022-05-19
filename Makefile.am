@@ -202,14 +202,7 @@ if ENABLE_MODULE_BULLETPROOF
 include src/modules/bulletproofs/Makefile.am.include
 endif
 
-if ENABLE_MODULE_AGGSIG
-include src/modules/aggsig/Makefile.am.include
-endif
-
 if ENABLE_MODULE_WHITELIST
 include src/modules/whitelist/Makefile.am.include
 endif
 
-if ENABLE_MODULE_SURJECTIONPROOF
-include src/modules/surjection/Makefile.am.include
-endif

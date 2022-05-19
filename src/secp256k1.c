@@ -36,9 +36,6 @@
 # include "include/secp256k1_bulletproofs.h"
 #endif
 
-#ifdef ENABLE_MODULE_AGGSIG
-# include "include/secp256k1_aggsig.h"
-#endif
 
 #define ARG_CHECK(cond) do { \
     if (EXPECT(!(cond), 0)) { \
@@ -774,14 +771,7 @@ int secp256k1_ec_privkey_tweak_neg(const secp256k1_context* ctx, unsigned char *
 # include "modules/bulletproofs/main_impl.h"
 #endif
 
-#ifdef ENABLE_MODULE_AGGSIG
-# include "modules/aggsig/main_impl.h"
-#endif
-
 #ifdef ENABLE_MODULE_WHITELIST
 # include "modules/whitelist/main_impl.h"
 #endif
 
-#ifdef ENABLE_MODULE_SURJECTIONPROOF
-# include "modules/surjection/main_impl.h"
-#endif

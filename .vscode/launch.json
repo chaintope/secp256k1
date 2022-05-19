@@ -1,0 +1,418 @@
+
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "CMake : C++ test - All",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/src/test/test_tapyrus",
+            "args": [ 
+                "--report_level=short",
+                "--log_level=test_suite",
+            ],
+            "cwd": "${workspaceFolder}",
+        },
+        {
+            "name": "CMake : C++ test - One",
+            "type": "lldb",
+            "request": "launch",
+            //"miDebuggerPath":"/Applications/Xcode.app/Contents/Developer/usr/bin/lldb-mi",
+            "program": "${workspaceFolder}/build/src/test/test_tapyrus",
+            "args": [ 
+                "--report_level=detailed",
+                "--log_level=test_suite",
+                "--run_test=key_tests",
+                "--run_test=key_io_tests",
+                "--run_test=script_standard_tests",
+                "--run_test=create_transaction_tests"
+                "--run_test=wallet_tests",
+            ],
+            "cwd": "${workspaceFolder}",
+        },
+        {
+            "name": "CMake : C++ test - libsecp256k1",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/src/secp256k1/tests",
+            "args": [ 
+                "32"
+            ],
+            "cwd": "${workspaceFolder}",
+        },
+        {
+            "name": "CMake : Python Util test",
+            "type": "python",
+            "request": "launch",
+            "env": {"TAPYRUSD":"${workspaceFolder}/build/src/tapyrusd", "TAPYRUSCLI":"${workspaceFolder}/build/src/tapyrus-cli"},
+            "program": "${workspaceFolder}/test/util/bitcoin-util-test.py",
+            "console": "integratedTerminal",
+            "subProcess": true,
+            "redirectOutput":true
+        },
+        {
+            "name": "CMake : Python Functional tests - All",
+            "type": "python",
+            "request": "launch",
+            "env": {"TAPYRUSD":"${workspaceFolder}/build/src/tapyrusd", "TAPYRUSCLI":"${workspaceFolder}/build/src/tapyrus-cli", "SRCDIR":"${workspaceFolder}",
+            "BUILDDIR":"${workspaceFolder}", "DYLD_FALLBACK_LIBRARY_PATH":"/usr/local/opt/openssl/lib", "PATH":"/usr/local/opt/openssl@1.1/bin:$PATH"},
+            "program": "${workspaceFolder}/test/functional/test_runner.py",
+            "args": [ 
+                //"--nocleanup"
+            ],
+            "subProcess": false,
+            "console": "integratedTerminal",
+            "stopOnEntry": false
+        },
+        {
+            "name": "CMake : Python Functional test - One",
+            "type": "python",
+            "request": "launch",
+            "env": {"TAPYRUSD":"${workspaceFolder}/build/src/tapyrusd", "TAPYRUSCLI":"${workspaceFolder}/build/src/tapyrus-cli", "DYLD_FALLBACK_LIBRARY_PATH":"/usr/local/opt/openssl/lib", "PATH":"/usr/local/opt/openssl@1.1/bin:$PATH"},
+            "program": "${workspaceFolder}/test/functional/rpc_psbt.py",
+            "args": [
+             //   "--usecli",
+            //"--segwit",
+            //"--gen-test-data"
+            ],
+            "console": "integratedTerminal",
+            "stopOnEntry": false
+        },
+        {
+            "name": "Cmake lldb: Attach tapyrusd",
+            "type": "lldb",
+            "request": "attach",
+            "pid": "${command:pickMyProcess}",
+            "miDebuggerPath": "/Users/navia/.vscode/extensions/ms-vscode.cpptools-1.7.1/debugAdapters/lldb-mi/bin/",
+            "program": "${workspaceFolder}/build/src/tapyrusd",
+            "logging": {
+                //"trace": true,
+                "engineLogging": true,
+                //"traceResponse": true
+            },
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "lldb"
+        },
+        {
+            "name": "Cmake cppdbg: Attach tapyrusd ",
+            "type": "lldb-vscode",
+            "request": "attach",
+            //"pid": "${command:pickMyProcess}",
+            "program": "${workspaceFolder}/build/src/tapyrusd",
+            "externalConsole": false,
+            "miDebuggerPath": "/Users/navia/.vscode/extensions/ms-vscode.cpptools-1.7.1/debugAdapters/lldb-mi/bin/lldb-mi"
+        },
+        {
+            "name": "Cmake : Attach tapyrusd-------",
+            "type": "cppdbg",
+            "request": "attach",
+            "processId": "${command:pickProcess}",
+            "program": "${workspaceFolder}/build/src/tapyrusd",
+            "externalConsole": false,
+            "MIMode": "lldb",
+            "logging": {
+                "trace": true,
+                "traceResponse": true,
+                "engineLogging": true
+            },
+            "miDebuggerPath": "/Users/navia/.vscode/extensions/ms-vscode.cpptools-1.7.1/debugAdapters/lldb-mi/bin/lldb-mi"
+        },
+        {
+            "name": "Cmake : Launch tapyrusd",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/src/tapyrusd",
+            "args": [ 
+                "-datadir=${workspaceFolder}/test/cache/node1",
+                "-dev=1"
+                "-txindex=1",
+                "-server=1",
+                "-rest=1",
+                "-rpcuser=user",
+                "-rpcpassword=pass",
+                "-rpcbind=0.0.0.0",
+                "-rpcallowip=172.16.2.0/24"
+            ],
+            "cwd": "${workspaceFolder}",
+            "MIMode": "lldb",
+            "logging": {
+                "trace": true,
+                "traceResponse": true,
+                "engineLogging": true
+            },
+            "miDebuggerPath": "/Users/navia/.vscode/extensions/ms-vscode.cpptools-1.7.1/debugAdapters/lldb-mi/bin/lldb-mi"
+        },
+        {
+            "name": "Cmake : Launch tapyrus-tx",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/src/tapyrus-tx",
+            "args": 
+            ["-scheme=SCHNORR",
+            "-create",
+            "in=4d49a71ec9da436f71ec4ee231d04f292a29cd316f598bb7068feccabdc59485:0",
+            "set=privatekeys:[\"5HpHagT65TZzG1PH3CSu63k8DbpvD8s5ip4nEB3kEsreAnchuDf\"]",
+            "set=prevtxs:[{\"txid\":\"4d49a71ec9da436f71ec4ee231d04f292a29cd316f598bb7068feccabdc59485\",\"vout\":0,\"scriptPubKey\":\"76a91491b24bf9f5288532960ac687abb035127b1d28a588ac\"}]",
+            "sign=ALL",
+            "outaddr=0.001:193P6LtvS4nCnkDvM9uXn1gsSRqh4aDAz7"],
+            "cwd": "${workspaceFolder}",
+        },
+        {
+            "name": "GNU : C++ test - All",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/test/test_tapyrus",
+            "args": [ 
+                "--report_level=short",
+                "--log_level=test_suite",
+            ],
+            "cwd": "${workspaceFolder}",
+        },
+        {
+            "name": "GNU : C++ test - One",
+            "type": "lldb",
+            "request": "launch",
+            //"miDebuggerPath":"/Applications/Xcode.app/Contents/Developer/usr/bin/lldb-mi",
+            "program": "${workspaceFolder}/src/test/test_tapyrus",
+            "args": [ 
+                "--report_level=detailed",
+                "--log_level=test_suite",
+                "--run_test=block_tests"
+            ],
+            "cwd": "${workspaceFolder}",
+        },
+        {
+            "name": "GNU : C++ test - libsecp256k1",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/tests",
+            "args": [ 
+                "32"
+            ],
+            "cwd": "${workspaceFolder}",
+        },
+        {
+            "name": "GNU : Bench tapyrus",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/bench/bench_tapyrus",
+            "args": [ 
+                //"32"
+            ],
+            "cwd": "${workspaceFolder}",
+        },
+        {
+            "name": "GNU : Python Util test",
+            "type": "python",
+            "request": "launch",
+            "env": {"TAPYRUSD":"${workspaceFolder}/src/tapyrusd", "TAPYRUSCLI":"${workspaceFolder}/src/tapyrus-cli"},
+            "program": "${workspaceFolder}/test/util/tapyrus-util-test.py",
+            "console": "integratedTerminal",
+            "subProcess": true,
+            "redirectOutput":true
+        },
+        {
+            "name": "GNU : Python Functional tests - All",
+            "type": "python",
+            "request": "launch",
+            "env": {"TAPYRUSD":"${workspaceFolder}/src/tapyrusd", "TAPYRUSCLI":"${workspaceFolder}/src/tapyrus-cli", "SRCDIR":"${workspaceFolder}",
+            "BUILDDIR":"${workspaceFolder}"},
+            "program": "${workspaceFolder}/test/functional/test_runner.py",
+            "args": [ 
+                //"--nocleanup"
+            ],
+            "subProcess": false,
+            "console": "integratedTerminal",
+            "stopOnEntry": false
+        },
+        {
+            "name": "GNU : Python Functional test - One",
+            "type": "python",
+            "request": "launch",
+            "env": {"TAPYRUSD":"${workspaceFolder}/src/tapyrusd", "TAPYRUSCLI":"${workspaceFolder}/src/tapyrus-cli", "DYLD_FALLBACK_LIBRARY_PATH":"/usr/local/opt/openssl/lib", "PATH":"/usr/local/opt/openssl@1.1/bin:$PATH"},
+            "program": "${workspaceFolder}/test/functional/feature_coloredcoin.py",
+            "args": [
+             //   "--usecli",
+            //"--segwit",
+            //"--gen-test-data"
+            ],
+            "console": "integratedTerminal",
+            "stopOnEntry": false
+        },
+        {
+            "name": "GNU cppdbg: Attach tapyrusd",
+            "type": "cppdbg",
+            "request": "attach",
+            "processId": "${command:pickProcess}",
+            "miDebuggerPath":"/Users/navia/.vscode/extensions/ms-vscode.cpptools-1.7.1/debugAdapters/lldb-mi/bin/lldb-mi",
+            "program": "${workspaceFolder}/src/tapyrusd",
+            "logging": {
+                //"trace": true,
+                "engineLogging": true,
+                //"traceResponse": true
+            },
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "lldb"
+        },
+        {
+            "name": "GNU lldb: Attach tapyrusd",
+            "type": "lldb",
+            "request": "attach",
+            "pid": "${command:pickMyProcess}",
+            "miDebuggerPath":"/Users/navia/.vscode/extensions/ms-vscode.cpptools-1.7.1/debugAdapters/lldb-mi/bin/lldb-mi",
+            "program": "${workspaceFolder}/src/tapyrusd",
+            "logging": {
+                //"trace": true,
+                "engineLogging": true,
+                //"traceResponse": true
+            },
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "lldb"
+        },
+        {
+            "name": "GNU : Launch tapyrus-tx",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/tapyrus-tx",
+            "args": 
+            [
+            "-create", "-json",
+            "in=4d49a71ec9da436f71ec4ee231d04f292a29cd316f598bb7068feccabdc59485:0",
+            "set=privatekeys:[\"5HpHagT65TZzG1PH3CSu63k8DbpvD8s5ip4nEB3kEsreAnchuDf\"]",
+            "set=prevtxs:[{\"txid\":\"4d49a71ec9da436f71ec4ee231d04f292a29cd316f598bb7068feccabdc59485\",\"vout\":0,\"scriptPubKey\":\"76a91491b24bf9f5288532960ac687abb035127b1d28a588ac\"}]",
+            "sign=ALL",
+            "outaddr=1:vmXejSsuy5KtpXhxKit3WicRUYig6UCb6Qmxf5RJuC37CuTS8W3NAMfet87iFEjC3XGq1Pucu6Hgn7"],
+            "cwd": "${workspaceFolder}",
+        },
+        {
+            "name": "GNU : Launch tapyrusd",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/tapyrusd",
+            "args": [ 
+                "-datadir=${workspaceFolder}/test/cache/node1",
+                //"-dev=1",
+                "-networkid=1",
+                "-txindex=1",
+                "-server=1",
+                "-rest=1",
+                "-rpcuser=user",
+                "-rpcpassword=pass",
+                "-rpcbind=0.0.0.0",
+                "-rpcallowip=172.16.2.0/24"
+            ],
+            "cwd": "${workspaceFolder}",
+            "MIMode": "lldb",
+            "logging": {
+                "trace": true,
+                "traceResponse": true,
+                "engineLogging": true
+            },
+            "miDebuggerPath": "/Users/navia/.vscode/extensions/ms-vscode.cpptools-1.7.1/debugAdapters/lldb-mi/bin/lldb-mi"
+        },
+        /*,
+        {
+            "name": "No wallet unit test list",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/src/test/test_tapyrus",
+            "cwd": "${workspaceFolder}",
+            "args": [ 
+                "--report_level=short",
+                "--log_level=test_suite",
+                "--run_test=addrman_tests",
+                "--run_test=allocator_tests",
+                "--run_test=amount_tests",
+                "--run_test=arith_uint256_tests",
+                "--run_test=base32_tests",
+                "--run_test=base58_tests",
+                "--run_test=base64_tests",
+                "--run_test=bech32_tests",
+                "--run_test=bip32_tests",
+                "--run_test=block_tests",
+                "--run_test=bloockencodings_tests",
+                "--run_test=bloom_tests",
+                "--run_test=bswap_tests",
+                "--run_test=chainparams_tests",
+                "--run_test=chainparamsbase_tests",
+                "--run_test=checkdatasig_tests",
+                "--run_test=checkqueue_tests",
+                "--run_test=coins_tests",
+                "--run_test=compress_tests",
+                "--run_test=crypto_tests",
+                "--run_test=cuckoocache_tests",
+                "--run_test=dbwrapper_tests",
+                "--run_test=denialofservice_tests",
+                "--run_test=descriptor_tests",
+                "--run_test=getarg_tests",
+                "--run_test=hash_tests",
+                "--run_test=key_io_tests",
+                "--run_test=key_tests",
+                "--run_test=limitedmap_tests",
+                "--run_test=main_tests",
+                "--run_test=mempool_tests",
+                "--run_test=merkle_tests",
+                "--run_test=merkleblock_tests",
+                "--run_test=miner_tests",
+                "--run_test=multisig_tests",
+                "--run_test=net_tests",
+                "--run_test=netbeans_tests",
+                "--run_test=pmt_tests",
+                "--run_test=policyestimator_tests",
+                "--run_test=prevector_tests",
+                "--run_test=raii_event_tests",
+                "--run_test=reverselock_tests",
+                "--run_test=rpc_tests",
+                "--run_test=sanity_tests",
+                "--run_test=scheduler_tests",
+                "--run_test=script_p2sh_tests",
+                "--run_test=script_standard_tests",
+                "--run_test=script_tests",
+                "--run_test=scriptnum_tests",
+                "--run_test=serialize_tests",
+                "--run_test=sighash_tests",
+                "--run_test=sigopcount_tests",
+                "--run_test=skiplist_tests",
+                "--run_test=streams_tests",
+                "--run_test=timedelta_tests",
+                "--run_test=torcontrol_tests",
+                "--run_test=transaction_tests",
+                "--run_test=txindex_tests",
+                "--run_test=txvalidation_tests",
+                "--run_test=tx_validationcache_tests",
+                "--run_test=uint256_tests",
+                "--run_test=util_tests",
+                "--run_test=validation_block_tests",
+                "--run_test=versionbits_tests",
+                "--run_test=psbt_wallet_tests",
+                "--run_test=wallet_tests",
+                "--run_test=wallet_crypto_tests",
+                "--run_test=accounting_tests"
+            ],
+        } ,
+        {
+            "name": "All Python tests - debug subprocess",
+            "type": "python",
+            "request": "launch",
+            "env": {"TAPYRUSD":"${workspaceFolder}/build/src/tapyrusd", "TAPYRUSCLI":"${workspaceFolder}/build/src/tapyrus-cli"},
+            "program": "${workspaceFolder}/test/functional/test_runner.py",
+            "args": [ 
+               // "--nocleanup"
+            ],
+            "subProcess": true,
+            "console": "integratedTerminal",
+            "stopOnEntry": false
+        },*/
+    ]
+}
+
+
