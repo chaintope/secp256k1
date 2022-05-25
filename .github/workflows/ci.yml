@@ -11,8 +11,8 @@ jobs:
       - name: Build and test
         run: |
            ./autogen.sh
-           mkdir build && cd build
-           ../configure  --enable-benchmark --enable-coverage --enable-experimental --enable-module-ecdh --enable-module-recovery --enable-module-generator --enable-module-commitment --enable-module-rangeproof --enable-module-bulletproof --enable-module-whitelist
+           mkdir build
+           ./configure  --enable-benchmark --enable-coverage --enable-experimental --enable-module-ecdh --enable-module-recovery --enable-module-generator --enable-module-commitment --enable-module-rangeproof --enable-module-bulletproof --enable-module-whitelist
            make all
            ./tests
            ./exhaustive_tests
