@@ -5,6 +5,11 @@ bench_verify
 bench_schnorr_verify
 bench_recover
 bench_internal
+bench_ecmult
+bench_generator
+bench_rangeproof
+bench_bulletproof
+
 tests
 exhaustive_tests
 gen_context
@@ -15,6 +20,7 @@ gen_context
 
 Makefile
 configure
+.vscode
 .libs/
 Makefile.in
 aclocal.m4
