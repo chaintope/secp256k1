@@ -16,7 +16,6 @@ jobs:
            make all
            ./tests
            ./exhaustive_tests
-           ./bench_bulletproof
            ./bench_ecdh
            ./bench_ecmult
            ./bench_generator
