@@ -11,6 +11,7 @@
 #include "libsecp256k1-config.h"
 #endif
 
+#include "checkmem.h"
 #include "util.h"
 #include "num.h"
 #include "field.h"
