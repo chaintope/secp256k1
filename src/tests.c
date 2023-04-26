@@ -4342,7 +4342,7 @@ static void test_ecdsa_wycheproof(void) {
     int t;
     for (t = 0; t < SECP256K1_ECDSA_WYCHEPROOF_NUMBER_TESTVECTORS; t++) {
         secp256k1_ecdsa_signature signature;
-        secp256k1_sha256 hasher;
+        secp256k1_sha256_t hasher;
         secp256k1_pubkey pubkey;
         const unsigned char *msg, *sig, *pk;
         unsigned char out[32] = {0};
@@ -4350,7 +4350,7 @@ static void test_ecdsa_wycheproof(void) {
 
         memset(&pubkey, 0, sizeof(pubkey));
         pk = &wycheproof_ecdsa_public_keys[testvectors[t].pk_offset];
-        CHECK(secp256k1_ec_pubkey_parse(CTX, &pubkey, pk, 65) == 1);
+        CHECK(secp256k1_ec_pubkey_parse(ctx, &pubkey, pk, 65) == 1);
 
         secp256k1_sha256_initialize(&hasher);
         msg = &wycheproof_ecdsa_messages[testvectors[t].msg_offset];
@@ -4358,8 +4358,8 @@ static void test_ecdsa_wycheproof(void) {
         secp256k1_sha256_finalize(&hasher, out);
 
         sig = &wycheproof_ecdsa_signatures[testvectors[t].sig_offset];
-        if (secp256k1_ecdsa_signature_parse_der(CTX, &signature, sig, testvectors[t].sig_len) == 1) {
-            actual_verify = secp256k1_ecdsa_verify(CTX, (const secp256k1_ecdsa_signature *)&signature, out, &pubkey);
+        if (secp256k1_ecdsa_signature_parse_der(ctx, &signature, sig, testvectors[t].sig_len) == 1) {
+            actual_verify = secp256k1_ecdsa_verify(ctx, (const secp256k1_ecdsa_signature *)&signature, out, &pubkey);
         }
         CHECK(testvectors[t].expected_verify == actual_verify);
     }
