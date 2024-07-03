@@ -5,9 +5,10 @@ on: [push, pull_request]
 jobs:
   linux:
     name: "Linux"
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
+>>>>>>> 30a8a2c0 (Port some fixes from bitcoin:)
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Build and test
         run: |
            ./autogen.sh
