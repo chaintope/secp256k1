@@ -259,6 +259,7 @@ static void secp256k1_gej_neg(secp256k1_gej *r, const secp256k1_gej *a) {
     r->x = a->x;
     r->y = a->y;
     r->z = a->z;
+    secp256k1_fe_normalize_weak(&r->y);
     secp256k1_fe_negate(&r->y, &r->y, 1);
 }
 

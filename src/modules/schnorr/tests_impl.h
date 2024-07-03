@@ -11,15 +11,14 @@
 #include "include/secp256k1_schnorr.h"
 #include "modules/schnorr/main_impl.h"
 
-void test_schnorr_api() {
+void test_schnorr_api(void) {
     unsigned char sk1[32];
     unsigned char sk2[32];
     unsigned char sk3[32];
     unsigned char msg[32];
     unsigned char sig64[64];
     secp256k1_pubkey pk[3];
-    unsigned char *sig = &sig64;
-    const unsigned char *msgptr = msg;
+    unsigned char *sig = &sig64[0];
 
     /** setup **/
     secp256k1_context *none = secp256k1_context_create(SECP256K1_CONTEXT_NONE);
@@ -606,7 +605,7 @@ void run_schnorr_compact_test(void) {
     }
 }
 
-void test_ecdsa_schnorr_nonce()
+void test_ecdsa_schnorr_nonce(void)
 {
     /* Verify that Schnorr signature and ECDSA do not use the same nonce as nonce_function_rfc6979
      * Compute 'r' using nonce_function_rfc6979 and using ecdsa and schnorr signatures.
