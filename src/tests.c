@@ -82,6 +82,12 @@ void random_fe_test(secp256k1_fe *x) {
     } while(1);
 }
 
+static void random_fe_non_zero_test(secp256k1_fe *fe) {
+     do {
+         random_fe_test(fe);
+     } while(secp256k1_fe_is_zero(fe));
+ }
+
 void random_group_element_test(secp256k1_ge *ge) {
     secp256k1_fe fe;
     do {
@@ -95,12 +101,7 @@ void random_group_element_test(secp256k1_ge *ge) {
 
 void random_group_element_jacobian_test(secp256k1_gej *gej, const secp256k1_ge *ge) {
     secp256k1_fe z2, z3;
-    do {
-        random_fe_test(&gej->z);
-        if (!secp256k1_fe_is_zero(&gej->z)) {
-            break;
-        }
-    } while(1);
+    random_fe_non_zero_test(&gej->z);
     secp256k1_fe_sqr(&z2, &gej->z);
     secp256k1_fe_mul(&z3, &z2, &gej->z);
     secp256k1_fe_mul(&gej->x, &ge->x, &z2);
@@ -1932,9 +1933,7 @@ void test_ge(void) {
     }
 
     /* Generate random zf, and zfi2 = 1/zf^2, zfi3 = 1/zf^3 */
-    do {
-        random_fe_test(&zf);
-    } while(secp256k1_fe_is_zero(&zf));
+    random_fe_non_zero_test(&zf);
     random_field_element_magnitude(&zf);
     secp256k1_fe_inv_var(&zfi3, &zf);
     secp256k1_fe_sqr(&zfi2, &zfi3);

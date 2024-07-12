@@ -297,7 +297,6 @@ static int secp256k1_ge_is_valid_var(const secp256k1_ge *a) {
     secp256k1_fe_sqr(&x3, &a->x); secp256k1_fe_mul(&x3, &x3, &a->x);
     secp256k1_fe_set_int(&c, CURVE_B);
     secp256k1_fe_add(&x3, &c);
-    secp256k1_fe_normalize_weak(&x3);
     return secp256k1_fe_equal_var(&y2, &x3);
 }
 

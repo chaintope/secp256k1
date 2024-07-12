@@ -149,7 +149,7 @@ AC_ARG_WITH([scalar], [AS_HELP_STRING([--with-scalar=64bit|32bit|auto],
 [Specify scalar implementation. Default is auto])],[req_scalar=$withval], [req_scalar=auto])
 
 AC_ARG_WITH([asm], [AS_HELP_STRING([--with-asm=x86_64|arm|no|auto]
-[Specify assembly optimizations to use. Default is auto (experimental: arm)])],[req_asm=$withval], [req_asm=auto])
+[Specify assembly to use. Default is auto (experimental: arm)])],[req_asm=$withval], [req_asm=auto])
 
 AC_CHECK_TYPES([__int128])
 
@@ -209,7 +209,7 @@ else
   x86_64)
     SECP_64BIT_ASM_CHECK
     if test x"$has_64bit_asm" != x"yes"; then
-      AC_MSG_ERROR([x86_64 assembly optimization requested but not available])
+      AC_MSG_ERROR([x86_64 assembly requested but not available])
     fi
     ;;
   arm)
@@ -217,7 +217,7 @@ else
   no)
     ;;
   *)
-    AC_MSG_ERROR([invalid assembly optimization selection])
+    AC_MSG_ERROR([invalid assembly selection])
     ;;
   esac
 fi
@@ -305,12 +305,12 @@ else
   esac
 fi
 
-# select assembly optimization
+# select assembly
 use_external_asm=no
 
 case $set_asm in
 x86_64)
-  AC_DEFINE(USE_ASM_X86_64, 1, [Define this symbol to enable x86_64 assembly optimizations])
+  AC_DEFINE(USE_ASM_X86_64, 1, [Define this symbol to enable x86_64 assembly])
   ;;
 arm)
   use_external_asm=yes
@@ -318,7 +318,7 @@ arm)
 no)
   ;;
 *)
-  AC_MSG_ERROR([invalid assembly optimizations])
+  AC_MSG_ERROR([invalid assembly selection])
   ;;
 esac
 
@@ -442,7 +442,7 @@ if test x"$use_external_asm" = x"yes"; then
 fi
 
 AC_MSG_NOTICE([Using static precomputation: $set_precomp])
-AC_MSG_NOTICE([Using assembly optimizations: $set_asm])
+AC_MSG_NOTICE([Using assembly: $set_asm])
 AC_MSG_NOTICE([Using field implementation: $set_field])
 AC_MSG_NOTICE([Using bignum implementation: $set_bignum])
 AC_MSG_NOTICE([Using scalar implementation: $set_scalar])
@@ -463,7 +463,7 @@ else
     AC_MSG_ERROR([ECDH module is experimental. Use --enable-experimental to allow.])
   fi
   if test x"$set_asm" = x"arm"; then
-    AC_MSG_ERROR([ARM assembly optimization is experimental. Use --enable-experimental to allow.])
+    AC_MSG_ERROR([ARM assembly is experimental. Use --enable-experimental to allow.])
   fi
 fi
 
