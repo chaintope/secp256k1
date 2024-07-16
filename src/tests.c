@@ -1921,9 +1921,7 @@ void test_ge(void) {
         for (i = 0; i < 4 * runs + 1; i++) {
             if (i == 0) {
                 /* The point at infinity does not have a meaningful z inverse. Any should do. */
-                do {
-                    random_fe_test(&zs[i]);
-                } while(secp256k1_fe_is_zero(&zs[i]));
+                random_fe_non_zero_test(&zs[i]);
             } else {
                 zs[i] = gej[i].z;
             }
