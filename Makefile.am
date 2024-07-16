@@ -38,7 +38,6 @@ noinst_HEADERS += src/field_10x26_impl.h
 noinst_HEADERS += src/field_5x52.h
 noinst_HEADERS += src/field_5x52_impl.h
 noinst_HEADERS += src/field_5x52_int128_impl.h
-noinst_HEADERS += src/field_5x52_asm_impl.h
 noinst_HEADERS += src/java/org_bitcoin_NativeSecp256k1.h
 noinst_HEADERS += src/java/org_bitcoin_Secp256k1Context.h
 noinst_HEADERS += src/util.h

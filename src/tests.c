@@ -58,16 +58,6 @@ static void uncounting_illegal_callback_fn(const char* str, void* data) {
     (*p)--;
 }
 
-void random_field_element_test(secp256k1_fe *fe) {
-    do {
-        unsigned char b32[32];
-        secp256k1_rand256_test(b32);
-        if (secp256k1_fe_set_b32(fe, b32)) {
-            break;
-        }
-    } while(1);
-}
-
 void random_field_element_magnitude(secp256k1_fe *fe) {
     secp256k1_fe zero;
     int n = secp256k1_rand_int(9);
@@ -82,10 +72,26 @@ void random_field_element_magnitude(secp256k1_fe *fe) {
     VERIFY_CHECK(fe->magnitude == n);
 }
 
+void random_fe_test(secp256k1_fe *x) {
+    unsigned char bin[32];
+    do {
+        secp256k1_rand256_test(bin);
+        if (secp256k1_fe_set_b32(x, bin)) {
+            return;
+        }
+    } while(1);
+}
+
+static void random_fe_non_zero_test(secp256k1_fe *fe) {
+     do {
+         random_fe_test(fe);
+     } while(secp256k1_fe_is_zero(fe));
+ }
+
 void random_group_element_test(secp256k1_ge *ge) {
     secp256k1_fe fe;
     do {
-        random_field_element_test(&fe);
+        random_fe_test(&fe);
         if (secp256k1_ge_set_xo_var(ge, &fe, secp256k1_rand_bits(1))) {
             secp256k1_fe_normalize(&ge->y);
             break;
@@ -95,12 +101,7 @@ void random_group_element_test(secp256k1_ge *ge) {
 
 void random_group_element_jacobian_test(secp256k1_gej *gej, const secp256k1_ge *ge) {
     secp256k1_fe z2, z3;
-    do {
-        random_field_element_test(&gej->z);
-        if (!secp256k1_fe_is_zero(&gej->z)) {
-            break;
-        }
-    } while(1);
+    random_fe_non_zero_test(&gej->z);
     secp256k1_fe_sqr(&z2, &gej->z);
     secp256k1_fe_mul(&z3, &z2, &gej->z);
     secp256k1_fe_mul(&gej->x, &ge->x, &z2);
@@ -1560,15 +1561,6 @@ void random_fe(secp256k1_fe *x) {
     } while(1);
 }
 
-void random_fe_test(secp256k1_fe *x) {
-    unsigned char bin[32];
-    do {
-        secp256k1_rand256_test(bin);
-        if (secp256k1_fe_set_b32(x, bin)) {
-            return;
-        }
-    } while(1);
-}
 
 void random_fe_non_zero(secp256k1_fe *nz) {
     int tries = 10;
@@ -1929,9 +1921,7 @@ void test_ge(void) {
         for (i = 0; i < 4 * runs + 1; i++) {
             if (i == 0) {
                 /* The point at infinity does not have a meaningful z inverse. Any should do. */
-                do {
-                    random_field_element_test(&zs[i]);
-                } while(secp256k1_fe_is_zero(&zs[i]));
+                random_fe_non_zero_test(&zs[i]);
             } else {
                 zs[i] = gej[i].z;
             }
@@ -1941,9 +1931,7 @@ void test_ge(void) {
     }
 
     /* Generate random zf, and zfi2 = 1/zf^2, zfi3 = 1/zf^3 */
-    do {
-        random_field_element_test(&zf);
-    } while(secp256k1_fe_is_zero(&zf));
+    random_fe_non_zero_test(&zf);
     random_field_element_magnitude(&zf);
     secp256k1_fe_inv_var(&zfi3, &zf);
     secp256k1_fe_sqr(&zfi2, &zfi3);
