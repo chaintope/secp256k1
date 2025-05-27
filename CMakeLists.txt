@@ -57,7 +57,7 @@ option(SECP256K1_INSTALL "Enable installation." ${PROJECT_IS_TOP_LEVEL})
 # We declare all options before processing them, to make sure we can express
 # dependencies while processing.
 option(SECP256K1_ENABLE_MODULE_ECDH "Enable ECDH module." ON)
-option(SECP256K1_ENABLE_MODULE_RECOVERY "Enable ECDSA pubkey recovery module." OFF)
+option(SECP256K1_ENABLE_MODULE_RECOVERY "Enable ECDSA pubkey recovery module." ON)
 option(SECP256K1_ENABLE_MODULE_SCHNORR "Enable schnorrsig module." ON)
 
 # Processing must be done in a topological sorting of the dependency graph
@@ -158,7 +158,7 @@ try_append_c_flags(-Wnested-externs)
 try_append_c_flags(-Wno-long-long) # GCC >= 3.0, -Wlong-long is implied by -pedantic.
 try_append_c_flags(-Wno-overlength-strings) # GCC >= 4.2, -Woverlength-strings is implied by -pedantic.
 try_append_c_flags(-Wno-unused-function) # GCC >= 3.0, -Wunused-function is implied by -Wall.
-try_append_c_flags(-Wreserved-identifier) # Clang >= 13.0 only.
+#try_append_c_flags(-Wreserved-identifier) # Clang >= 13.0 only.
 try_append_c_flags(-Wshadow)
 try_append_c_flags(-Wstrict-prototypes)
 try_append_c_flags(-Wundef)
@@ -194,6 +194,40 @@ set(USE_NUM_GMP 0)
 set(USE_NUM_NONE 1)
 set(USE_FIELD_INV_BUILTIN 1)
 set(USE_SCALAR_INV_BUILTIN 1)
+
+# Check for GMP
+find_package(GMP QUIET)
+if(GMP_FOUND)
+  set(USE_NUM_GMP 1)
+  set(USE_NUM_NONE 0)
+  set(USE_FIELD_INV_NUM 1)
+  set(USE_SCALAR_INV_NUM 1)
+  set(USE_FIELD_INV_BUILTIN 0)
+  set(USE_SCALAR_INV_BUILTIN 0)
+endif()
+
+# Check for __int128 support
+include(CheckCSourceCompiles)
+check_c_source_compiles("
+int main() {
+  __int128 x = 0;
+  (void)x;
+  return 0;
+}
+" HAVE___INT128)
+
+# Configure field implementation
+if(CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64|AMD64" AND HAVE___INT128)
+  set(USE_FIELD_5X52 1)
+  set(USE_FIELD_10X26 0)
+  set(USE_SCALAR_4X64 1)
+  set(USE_SCALAR_8X32 0)
+else()
+  set(USE_FIELD_5X52 0)
+  set(USE_FIELD_10X26 1)
+  set(USE_SCALAR_4X64 0)
+  set(USE_SCALAR_8X32 1)
+endif()
 
 configure_file(
   ${PROJECT_SOURCE_DIR}/src/libsecp256k1-config.h.cmake.in

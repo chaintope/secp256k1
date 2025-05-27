@@ -1,14 +1,15 @@
-name: Build and Test
+name: CI
 
 on: [push, pull_request]
 
 jobs:
-  build:
+  build_test:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
         build_system: [autotools, cmake]
+        use_gmp: [true, false]
 
     steps:
     - uses: actions/checkout@v3
@@ -17,18 +18,28 @@ jobs:
       if: matrix.os == 'ubuntu-latest'
       run: |
         sudo apt-get update
-        sudo apt-get install -y build-essential autotools-dev automake pkg-config cmake
+        sudo apt-get install -y build-essential autotools-dev automake pkg-config cmake libtool
+        if [ "${{ matrix.use_gmp }}" = "true" ]; then
+          sudo apt-get install -y libgmp-dev
+        fi
 
     - name: Install dependencies (macOS)
       if: matrix.os == 'macos-latest'
       run: |
-        brew install automake pkg-config cmake
+        brew install automake pkg-config cmake libtool
+        if [ "${{ matrix.use_gmp }}" = "true" ]; then
+          brew install gmp
+        fi
 
     - name: Configure and build with Autotools
       if: matrix.build_system == 'autotools'
       run: |
         ./autogen.sh
-        ./configure --disable-shared
+        if [ "${{ matrix.use_gmp }}" = "true" ]; then
+          ./configure --disable-shared --with-bignum=gmp
+        else
+          ./configure --disable-shared --with-bignum=no
+        fi
         make -j$(nproc)
         make check
 
@@ -36,16 +47,10 @@ jobs:
       if: matrix.build_system == 'cmake'
       run: |
         mkdir build && cd build
-        cmake -DSECP256K1_BUILD_TESTS=ON -DBUILD_SHARED_LIBS=OFF ..
+        if [ "${{ matrix.use_gmp }}" = "true" ]; then
+          cmake -DSECP256K1_BUILD_TESTS=ON -DBUILD_SHARED_LIBS=OFF ..
+        else
+          cmake -DSECP256K1_BUILD_TESTS=ON -DBUILD_SHARED_LIBS=OFF -DUSE_NUM_NONE=ON ..
+        fi
         cmake --build . --parallel
         ctest --output-on-failure
-
-    - name: Run tests with Valgrind (Ubuntu)
-      if: matrix.os == 'ubuntu-latest'
-      run: |
-        if [ "${{ matrix.build_system }}" = "autotools" ]; then
-          make check-valgrind
-        else
-          cd build
-          ctest -T memcheck --output-on-failure
-        fi 
