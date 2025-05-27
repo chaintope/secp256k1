@@ -4,6 +4,8 @@
 #define LIBSECP256K1_CONFIG_H
 
 #cmakedefine HAVE___INT128
+#cmakedefine HAVE_BUILTIN_EXPECT
+#cmakedefine HAVE_LIBGMP
 
 #cmakedefine USE_NUM_GMP
 #cmakedefine USE_FIELD_INV_NUM
