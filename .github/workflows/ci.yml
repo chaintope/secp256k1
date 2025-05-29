@@ -3,16 +3,54 @@ name: CI
 on: [push, pull_request]
 
 jobs:
-  linux:
-    name: "Linux"
-    runs-on: ubuntu-22.04
+  build_test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        build_system: [autotools, cmake]
+        use_gmp: [true, false]
+
     steps:
-      - uses: actions/checkout@v4
-      - name: Build and test
-        run: |
-           ./autogen.sh
-           mkdir build && cd build
-           ../configure
-           make all
-           ./tests
-           ./exhaustive_tests
+    - uses: actions/checkout@v3
+
+    - name: Install dependencies (Ubuntu)
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential autotools-dev automake pkg-config cmake libtool
+        if [ "${{ matrix.use_gmp }}" = "true" ]; then
+          sudo apt-get install -y libgmp-dev
+        fi
+
+    - name: Install dependencies (macOS)
+      if: matrix.os == 'macos-latest'
+      run: |
+        brew install automake pkg-config cmake libtool
+        if [ "${{ matrix.use_gmp }}" = "true" ]; then
+          brew install gmp
+        fi
+
+    - name: Configure and build with Autotools
+      if: matrix.build_system == 'autotools'
+      run: |
+        ./autogen.sh
+        if [ "${{ matrix.use_gmp }}" = "true" ]; then
+          ./configure --disable-shared --with-bignum=gmp
+        else
+          ./configure --disable-shared --with-bignum=no
+        fi
+        make -j$(nproc)
+        make check
+
+    - name: Configure and build with CMake
+      if: matrix.build_system == 'cmake'
+      run: |
+        mkdir build && cd build
+        if [ "${{ matrix.use_gmp }}" = "true" ]; then
+          cmake -DSECP256K1_BUILD_TESTS=ON -DBUILD_SHARED_LIBS=OFF ..
+        else
+          cmake -DSECP256K1_BUILD_TESTS=ON -DBUILD_SHARED_LIBS=OFF -DUSE_NUM_NONE=ON ..
+        fi
+        cmake --build . --parallel
+        ctest --output-on-failure
