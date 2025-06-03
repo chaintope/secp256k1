@@ -4,9 +4,6 @@ include(GNUInstallDirs)
 # Add objects explicitly rather than linking to the object libs to keep them
 # from being exported.
 add_library(secp256k1 secp256k1.c)
-if(SECP256K1_ECMULT_STATIC_PRECOMPUTATION)
-  target_sources(secp256k1 PRIVATE ecmult_static_context.h)
-endif()
 
 target_include_directories(secp256k1 
     PUBLIC
