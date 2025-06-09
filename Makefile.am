@@ -150,7 +150,7 @@ CFLAGS_FOR_BUILD += -Wall -Wextra -Wno-unused-function
 gen_context_OBJECTS = gen_context.o
 gen_context_BIN = gen_context$(BUILD_EXEEXT)
 gen_%.o: src/gen_%.c
-	$(CC_FOR_BUILD) $(CPPFLAGS_FOR_BUILD) $(CFLAGS_FOR_BUILD) -c $< -o $@
+	$(CC_FOR_BUILD) $(CPPFLAGS_FOR_BUILD) -I$(top_srcdir)/src $(CFLAGS_FOR_BUILD) -c $< -o $@
 
 $(gen_context_BIN): $(gen_context_OBJECTS)
 	$(CC_FOR_BUILD) $^ -o $@

@@ -12,6 +12,10 @@ project(secp256k1
   HOMEPAGE_URL "https://github.com/chaintope/secp256k1"
   LANGUAGES C
 )
+
+# Prevent C++ headers from being included
+add_compile_definitions(SECP256K1_C_ONLY=1)
+
 enable_testing()
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
@@ -38,17 +42,14 @@ set(${PROJECT_NAME}_LIB_VERSION_AGE 0)
 #=============================
 # Language setup
 #=============================
-set(CMAKE_C_STANDARD 90)
+set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_EXTENSIONS OFF)
 
 #=============================
 # Configurable options
 #=============================
-option(BUILD_SHARED_LIBS "Build shared libraries." ON)
-option(SECP256K1_DISABLE_SHARED "Disable shared library. Overrides BUILD_SHARED_LIBS." OFF)
-if(SECP256K1_DISABLE_SHARED)
-  set(BUILD_SHARED_LIBS OFF)
-endif()
+option(BUILD_SHARED_LIBS "Build shared libraries." OFF)
+option(SECP256K1_DISABLE_SHARED "Disable shared library. Overrides BUILD_SHARED_LIBS." ON)
 
 option(SECP256K1_INSTALL "Enable installation." ${PROJECT_IS_TOP_LEVEL})
 
