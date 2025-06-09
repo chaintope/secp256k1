@@ -51,6 +51,7 @@ endif()
 
 if(SECP256K1_ENABLE_MODULE_SCHNORR)
     target_compile_definitions(secp256k1 PRIVATE ENABLE_MODULE_SCHNORR=1)
+    target_sources(secp256k1 PRIVATE modules/schnorr/main_impl.h)
 endif()
 
 # We make sure __int128 is defined
